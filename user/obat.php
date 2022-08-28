@@ -4,20 +4,19 @@ include_once '../config/koneksi.php';
 
 //cek jika belum login
 if(!isset($_SESSION['login'])){
-    //redirect ke halaman login
+    //kembalikan user ke halaman login
     header('Location: ../auth/login.php');
     exit();
 }
 
-//cek jika role admin yang masuk
+//cek jika role user yang masuk
 if(isset($_SESSION['admin'])){
-    //redirect ke halaman admin
+    //redirect ke halaman user
     /* hal ini akan mencegah bypass sesi*/
     header('Location: ../admin/index.php');
     exit();
 }
 
-$pasien = mysqli_query($db, "SELECT * FROM pasien");
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +30,7 @@ $pasien = mysqli_query($db, "SELECT * FROM pasien");
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Pasien</title>
+    <title>Obat</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -69,21 +68,21 @@ $pasien = mysqli_query($db, "SELECT * FROM pasien");
             </a>
 
             <!-- Pasien -->
-            <li class="nav-item  <?php echo (basename($_SERVER['PHP_SELF']) == "index.php" ? "active" : "");?>">
+            <li class="nav-item">
                 <a class="nav-link" href="index.php">
                 <i class="bi bi-person-fill"></i>
                     <span>Pasien</span></a>
             </li>
 
-             <!-- Obat -->
-             <li class="nav-item">
+            <!-- Nav Item - Tables -->
+            <li class="nav-item <?php echo (basename($_SERVER['PHP_SELF']) == "obat.php" ? "active" : "");?>">
                 <a class="nav-link" href="obat.php">
-                <i class="bi bi-person-fill"></i>
+                <i class="bi bi-capsule"></i>
                     <span>Obat</span></a>
             </li>
 
-             <!-- Log out -->
-             <li class="nav-item">
+              <!-- Log out -->
+              <li class="nav-item">
                 <a class="nav-link" href="../auth/logout.php">
                 <i class="bi bi-box-arrow-left"></i>
                     <span>Log Out</span></a>
@@ -137,7 +136,6 @@ $pasien = mysqli_query($db, "SELECT * FROM pasien");
                 <!-- DataTables Example -->
                    <div id="contentData"></div>
 
-
                 </div>
                 <!-- /.container-fluid -->
 
@@ -174,14 +172,17 @@ $pasien = mysqli_query($db, "SELECT * FROM pasien");
 
     <!-- Page level custom scripts -->
     <script src="../js/demo/datatables-demo.js"></script>
+
     <!-- Ajax jquery -->
     <script>
+
+    //load dokumen HTML
 $(document).ready(function(){
-        loadData()
+    loadData()
 
         function loadData(){
             $.ajax({
-                url:'getData.php',
+                url:'getDataObat.php',
                 type:'get',
                 success:function(data){
                     $('#contentData').html(data)
@@ -189,8 +190,8 @@ $(document).ready(function(){
 
         })  
 
-    }
-})
+        }
+    })
 </script>
 </body>
 </html>

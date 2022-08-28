@@ -9,7 +9,18 @@ $pasien = mysqli_query($db, "SELECT * FROM pasien");
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                            <button type="button" class="btn btn-success mb-3"  data-bs-toggle="modal" data-bs-target="#tambahPasien"><i class="bi bi-plus-circle"></i> Tambah Pasien </button>
+                            <div class="d-flex justify-content-between mb-4">
+
+                                <div>
+                                <button type="button" class="btn btn-success mr-3"  data-bs-toggle="modal" data-bs-target="#tambahPasien"><i class="bi bi-plus-circle"></i> Tambah Pasien </button>
+                                </div>
+
+                                <div>
+                                <a href='../print/printPasien.php' target="_blank"><button type="button" class="btn btn-success"><i class="bi bi-printer"></i> Cetak Pasien </button></a>
+                                </div>
+
+                            </div>
+                           
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>

@@ -9,6 +9,9 @@ $pasien = mysqli_query($db, "SELECT * FROM pasien");
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
+
+                                <a href='../print/printPasien.php' target="_blank"><button type="button" class="btn btn-success mb-3"><i class="bi bi-printer"></i> Cetak Pasien </button></a>
+                  
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
@@ -27,6 +30,8 @@ $pasien = mysqli_query($db, "SELECT * FROM pasien");
                                     <?php
                                     $i = 1;
                                     while($data = mysqli_fetch_assoc($pasien)){
+                                        $link_delete = "<a class='btn btn-danger mb-1 hapusData' href='deleteData.php?id=" . $data['id'] . "'>Delete</a>";
+                                        $link_update = "<a class='btn btn-warning mb-1 updateData' data-bs-toggle='modal' data-bs-target='#editPasien' href='updateData.php?id=" . $data['id'] . "'>Update</a>";
                                         ?>
                                         <tr>
                                         <td style="display:none;"><?php echo $data['id']; ?></td>

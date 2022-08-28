@@ -17,7 +17,6 @@ if(isset($_SESSION['user'])){
     exit();
 }
 
-$pasien = mysqli_query($db, "SELECT * FROM pasien");
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +30,7 @@ $pasien = mysqli_query($db, "SELECT * FROM pasien");
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Pasien</title>
+    <title>Obat</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -92,14 +91,14 @@ $pasien = mysqli_query($db, "SELECT * FROM pasien");
             <hr class="sidebar-divider">
 
             <!-- Pasien -->
-            <li class="nav-item  <?php echo (basename($_SERVER['PHP_SELF']) == "pasien.php" ? "active" : "");?>">
+            <li class="nav-item">
                 <a class="nav-link" href="pasien.php">
                 <i class="bi bi-person-fill"></i>
                     <span>Pasien</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
+            <li class="nav-item <?php echo (basename($_SERVER['PHP_SELF']) == "obat.php" ? "active" : "");?>">
                 <a class="nav-link" href="obat.php">
                 <i class="bi bi-capsule"></i>
                     <span>Obat</span></a>
@@ -166,48 +165,43 @@ $pasien = mysqli_query($db, "SELECT * FROM pasien");
                 <!-- End of Topbar -->
 
                 <!-- Modal tambah-->
-                <div class="modal fade" id="tambahPasien" tabindex="-1" aria-labelledby="tambahPasien" aria-hidden="true">
+                <div class="modal fade" id="tambahObat" tabindex="-1" aria-labelledby="tambahObat" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="tambahPasien">Tambah Pasien</h5>
+                        <h5 class="modal-title" id="tambahObat">Tambah Obat</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body">
 
                         <!-- Form tambah -->
-                    <form method="post" action="insertData.php">
+                    <form method="post" action="insertDataObat.php">
 
-                          <!-- Pesan jika data berhasil di tambah -->
+                        <!-- Pesan jika data berhasil di tambah -->
                     <div class="alert alert-success alert-dismissible pesanTambah" role="alert" style="display:none;">
-                       Data pasien berhasil di tambahkan.
+                       Data obat berhasil di tambahkan.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
 
                     <div class="mb-3">
-                        <label for="nomor_identitas" class="form-label">Nomor Identitas</label>
-                        <input type="text" class="form-control tambah-data" id="nomor_identitas" name="nomor_identitas" autocomplete='off' required/>
+                        <label for="nama_obat" class="form-label">Nama Obat</label>
+                        <input type="text" class="form-control tambah-data" id="nama_obat" name="nama_obat" autocomplete='off' required/>
                     </div>
 
                     <div class="mb-3">
-                        <label for="nama_pasien" class="form-label">Nama Pasien</label>
-                        <input type="text" class="form-control tambah-data" id="nama_pasien" name="nama_pasien" autocomplete='off' required/>
+                        <label for="stok" class="form-label">Stok</label>
+                        <input type="text" class="form-control tambah-data" id="stok" name="stok" autocomplete='off' required/>
                     </div>
 
                     <div class="mb-3">
-                        <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                        <input type="text" class="form-control tambah-data" id="jenis_kelamin" name="jenis_kelamin" autocomplete='off' required/>
+                        <label for="satuan" class="form-label">Satuan</label>
+                        <input type="text" class="form-control tambah-data" id="satuan" name="satuan" autocomplete='off' required/>
                     </div>
 
                     <div class="mb-3">
-                        <label for="alamat" class="form-label">Alamat</label>
-                        <input type="text" class="form-control tambah-data" id="alamat" name="alamat" autocomplete='off' required/>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="no_telepon" class="form-label">No telepon</label>
-                        <input type="text" class="form-control tambah-data" id="no_telepon" name="no_telepon" autocomplete='off' required/>
+                        <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
+                        <input type="text" class="form-control tambah-data" id="tanggal_masuk" name="tanggal_masuk" autocomplete='off' required/>
                     </div>
 
                     <div class="modal-footer">
@@ -225,11 +219,11 @@ $pasien = mysqli_query($db, "SELECT * FROM pasien");
                 <!-- Akhir modal tambah -->
 
                  <!-- Modal edit-->
-                 <div class="modal fade" id="editPasien" tabindex="-1" aria-labelledby="editPasien" aria-hidden="true">
+                 <div class="modal fade" id="editObat" tabindex="-1" aria-labelledby="editObat" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editPasien">Edit Pasien</h5>
+                        <h5 class="modal-title" id="editObat">Edit Obat</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
@@ -248,7 +242,6 @@ $pasien = mysqli_query($db, "SELECT * FROM pasien");
 
                 <!-- DataTables Example -->
                    <div id="contentData"></div>
-
 
                 </div>
                 <!-- /.container-fluid -->
@@ -289,18 +282,19 @@ $pasien = mysqli_query($db, "SELECT * FROM pasien");
 
     <!-- Ajax jquery -->
     <script>
+
     //load dokumen HTML
 $(document).ready(function(){
-     //tampilkan data pasien menggunakan AJAX
+    //tampilkan data obat menggunakan AJAX
         loadData()
 
-         //cek jika tombol tambah di submit 
+        //cek jika tombol tambah di submit 
         $('form').on('submit', function(e){
 
-            //fungsi e.preventDefault() dalam studi kasus ini di gunakan agar tetap berada pada file pasien.php
+            //fungsi e.preventDefault() dalam studi kasus ini di gunakan agar tetap berada pada file obat.php
             e.preventDefault()
            
-             //lakukan tambah pasien menggunakan AJAX
+            //lakukan tambah obat menggunakan AJAX
             $.ajax({
 
                 //ambil atrribute method
@@ -324,9 +318,9 @@ $(document).ready(function(){
                     $('[type=text]').val('')
                 },
 
-                 //cek jika error
+                //cek jika error
                 error: function() {
-                     //beri peringatan error
+                    //beri peringatan error
                     alert('Maaf data gagal di tambahkan!')
                 }
             })
@@ -339,8 +333,8 @@ $(document).ready(function(){
             //lakukan ajax
             $.ajax({
 
-                 //loadData pada file getData.php menggunakan AJAX
-                url:'getData.php',
+                //loadData pada file getDataObat.php menggunakan AJAX
+                url:'getDataObat.php',
 
                 //gunakan method GET
                 type:'get',
@@ -348,14 +342,14 @@ $(document).ready(function(){
                 //cek jika success
                 success:function(data){
 
-                     //lakukan AJAX untuk menampilkan data pasien
+                    //lakukan AJAX untuk menampilkan data obat
                     $('#contentData').html(data)
 
-                     //cek jika menekan tombol hapus
+                    //cek jika menekan tombol hapus
                     $('.hapusData').click(function(e){
-                        if(confirm('Apakah anda yakin untuk hapus data pasien?') == true){
+                        if(confirm('Apakah anda yakin untuk hapus data obat?') == true){
 
-                        //fungsi e.preventDefault() dalam studi kasus ini di gunakan agar tetap berada pada file pasien.php
+                         //fungsi e.preventDefault() dalam studi kasus ini di gunakan agar tetap berada pada file obat.php
                         e.preventDefault()
 
                         //lakukan ajax
@@ -364,47 +358,48 @@ $(document).ready(function(){
                             //gunakan method GET
                             type:'get',
 
-                            //ambil attribute pada href yang berada pada file getData.php pada variabel $link_delete
+                            //ambil attribute pada href yang berada pada file getDataObat.php pada variabel $link_delete
                             url:$(this).attr('href'),
 
                             //cek jika success
                             success:function(){
                                 //load data menggunakan AJAX
-                              loadData()
+                                loadData()
                             }
                         })
 
                     //cek jika data tidak jadi di hapus
                     }else{
-                         //jangan hapus tetapkan di file pasien.php
+                        //jangan hapus tetapkan di file obat.php
                         e.preventDefault()
                        
                     }
-                })             
-            }        
+                })
+            }     
         })  
-            //cek jika tombol editPasien di tekan
-            $('#editPasien').modal({
+            
+            //cek jika tombol editObat di tekan
+            $('#editObat').modal({
                 keyboard: true,
                 backdrop: "static",
                 show: false,
             
-            //biar mudah, kode di bawah ini di gunakan untuk mempermudah pengambilan data form modal edit agar value muncul sesuai id yang ada pada tabel bernama pasien
+                //biar mudah, kode di bawah ini di gunakan untuk mempermudah pengambilan data form modal edit agar value muncul sesuai no yang ada pada tabel bernama obat
             }).on("show.bs.modal", function(event){
                 var button =  $(event.relatedTarget);
-                var id = $(event.relatedTarget).closest("tr").find("td:eq(0)").text(); 
-                var nomor_identitas = $(event.relatedTarget).closest("tr").find("td:eq(2)").text(); 
-                var nama_pasien = $(event.relatedTarget).closest("tr").find("td:eq(3)").text();
-                var jenis_kelamin = $(event.relatedTarget).closest("tr").find("td:eq(4)").text();
-                var alamat = $(event.relatedTarget).closest("tr").find("td:eq(5)").text();
-                var no_telepon = $(event.relatedTarget).closest("tr").find("td:eq(6)").text();
+                var no = $(event.relatedTarget).closest("tr").find("td:eq(0)").text(); 
+                var no_obat = $(event.relatedTarget).closest("tr").find("td:eq(1)").text(); 
+                var nama_obat = $(event.relatedTarget).closest("tr").find("td:eq(2)").text(); 
+                var stok = $(event.relatedTarget).closest("tr").find("td:eq(3)").text();
+                var satuan = $(event.relatedTarget).closest("tr").find("td:eq(4)").text();
+                var tanggal_masuk = $(event.relatedTarget).closest("tr").find("td:eq(5)").text();
 
-                 //muncul kan form modal edit
+                //muncul kan form modal edit
                 $(this).find('#modal-edit').html($(
                     `
                 <!-- Form edit -->
                     <form method="post" class="updateData">
-                    
+
                     <!-- Pesan jika data berhasil di tambah -->
                     <div class="alert alert-success alert-dismissible pesanUbah" role="alert" style="display:none;">
                        Data obat berhasil di ubah.
@@ -412,33 +407,28 @@ $(document).ready(function(){
                         </div>
 
                     <div class="mb-3">
-                        <label for="id" class="form-label d-none">Id</label>
-                        <input type="text" class="form-control d-none" id="id" name="id" autocomplete='off' value="${id}" required/>
+                        <label for="no" class="form-label d-none">no</label>
+                        <input type="text" class="form-control d-none" id="no" name="no" autocomplete='off' value="${no}" required/>
                     </div>
 
                     <div class="mb-3">
-                        <label for="nomor_identitas" class="form-label">Nomor Identitas</label>
-                        <input type="text" class="form-control" id="nomor_identitas" name="nomor_identitas" autocomplete='off' value="${nomor_identitas}" required/>
+                        <label for="nama_obat" class="form-label">Nama Obat</label>
+                        <input type="text" class="form-control" id="nama_obat" name="nama_obat" autocomplete='off' value="${nama_obat}" required/>
                     </div>
 
                     <div class="mb-3">
-                        <label for="nama_pasien" class="form-label">Nama Pasien</label>
-                        <input type="text" class="form-control" id="nama_pasien" name="nama_pasien" autocomplete='off' value="${nama_pasien}" required/>
+                        <label for="stok" class="form-label">Stok</label>
+                        <input type="text" class="form-control" id="stok" name="stok" autocomplete='off' value="${stok}" required/>
                     </div>
 
                     <div class="mb-3">
-                        <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                        <input type="text" class="form-control" id="jenis_kelamin" name="jenis_kelamin" autocomplete='off' value="${jenis_kelamin}" required/>
+                        <label for="satuan" class="form-label">Satuan</label>
+                        <input type="text" class="form-control" id="satuan" name="satuan" autocomplete='off' value="${satuan}" required/>
                     </div>
 
                     <div class="mb-3">
-                        <label for="alamat" class="form-label">Alamat</label>
-                        <input type="text" class="form-control" id="alamat" name="alamat" autocomplete='off' value="${alamat}" required/>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="no_telepon" class="form-label">No telepon</label>
-                        <input type="text" class="form-control" id="no_telepon" name="no_telepon" autocomplete='off' value="${no_telepon}" required/>
+                        <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
+                        <input type="text" class="form-control" id="tanggal_masuk" name="tanggal_masuk" autocomplete='off' value="${tanggal_masuk}" required/>
                     </div>
 
                     <div class="modal-footer">
@@ -454,26 +444,31 @@ $(document).ready(function(){
                 
                 ))
 
-                 //cek jika tombol edit di tekan
+                //cek jika tombol edit di tekan
                 $('#edit').click(function(e){
                     //ambil semua data form edit modal
                     var data = $('.updateData').serialize()
-                   
-                     //lakukan AJAX
+
+                    // if(nomor_identitas == '' || nama_pasien == '' || jenis_kelamin == '' || alamat == '' || no_telepon == ''){
+                    //     alert('Ok')
+                    //     exit;
+                    // }
+
+                    //lakukan AJAX
                     $.ajax({
 
-                      //gunakan method POST
+                        //gunakan method POST
                       type:'POST',
 
-                       //siapkan data edit
+                      //siapkan data edit
                       data:data,
 
-                      //edit pasien pada file updateData.php
-                      url:'updateData.php',
+                      //edit obat pada file updateDataObat.php
+                      url:'updateDataObat.php',
 
                       //cek jika success
                       success:function(){
-                           //load data pasien menggunakan AJAX
+                          //load data obat menggunakan AJAX
                           loadData()
 
                            //munculkan pesan jika data berhasil di ubah
@@ -483,13 +478,15 @@ $(document).ready(function(){
                           $('[type=text]').val('')
                         }
                     })
+               
                 })
                 
             }).on('hide.bs.modal', function(event){
                 $(this).find('#modal-edit').html("")
-        })
-    }
-})
+            })
+      
+        }
+    })
 </script>
 </body>
 </html>
