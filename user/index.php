@@ -78,7 +78,7 @@ $pasien = mysqli_query($db, "SELECT * FROM pasien");
              <!-- Obat -->
              <li class="nav-item">
                 <a class="nav-link" href="obat.php">
-                <i class="bi bi-person-fill"></i>
+                <i class="bi bi-capsule"></i>
                     <span>Obat</span></a>
             </li>
 
