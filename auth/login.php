@@ -28,19 +28,30 @@ include_once '../config/koneksi.php';
 
     <body>
 <?php
-if(isset($_COOKIE['sess_id'])){
-    $roleCookie = $_COOKIE['sess_id'];
+//cek jika cookie telah di set
+if(isset($_COOKIE['sess_role']) && isset($_COOKIE['auth'])){
+    
+    //buat variabel cookie untuk validasi
+    $roleCookie = $_COOKIE['sess_role'];
+
+    //ambil role untuk mengolah data role pada sistem aplikasi
     $querySelect = mysqli_query($db, "SELECT role FROM users WHERE role = '$roleCookie'");
     $rowData = mysqli_fetch_assoc($querySelect);
 
+    //cek jika admin yang masuk
     if($rowData['role'] == 'admin'){
+        //set session
         $_SESSION['login'] = true;
         $_SESSION['admin'] = $rowData['role'];
+        //redirect ke halaman admin
         header("Location: ../admin/index.php");
        
+    //cek jika user yang masuk
     }else if($rowData['role'] == 'user'){
+        //set session
         $_SESSION['login'] = true;
         $_SESSION['user'] = $rowData['role'];
+        //redirect ke halaman user
         header("Location: ../user/index.php");
        
     }
@@ -74,8 +85,8 @@ if(isset($_POST['login'])){
 			    if(isset($_POST["remember"])){
 
                     //buat cookie
-                    setcookie('sess_id', $rowData['role'], time() + 86400 * 30, "/");
-                    setcookie('auth', hash('sha512', $rowData['username']), time() + 86400 * 30, "/");
+                    setcookie('sess_role', $rowData['role'], time() + 86400 * 30, "/", null, null, true);
+                    setcookie('auth', hash('sha512', $rowData['username']), time() + 86400 * 30, "/", null, null, true);
                 
                 }
 
@@ -105,8 +116,8 @@ if(isset($_POST['login'])){
 			  if(isset($_POST["remember"])){
 
                 //buat cookie
-                setcookie('sess_id', $rowData['role'], time() + 86400 * 30, "/");
-                setcookie('auth', hash('sha512', $rowData['username']), time() + 86400 * 30, "/");
+                setcookie('sess_role', $rowData['role'], time() + 86400 * 30, "/", null, null, true);
+                setcookie('auth', hash('sha512', $rowData['username']), time() + 86400 * 30, "/", null, null, true);
            
               }         
 

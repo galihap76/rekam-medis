@@ -485,6 +485,7 @@ $(document).ready(function(){
                     })
                 })
                 
+            //akhiri modal
             }).on('hide.bs.modal', function(event){
                 $(this).find('#modal-edit').html("")
         })

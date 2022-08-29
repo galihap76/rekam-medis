@@ -449,11 +449,6 @@ $(document).ready(function(){
                     //ambil semua data form edit modal
                     var data = $('.updateData').serialize()
 
-                    // if(nomor_identitas == '' || nama_pasien == '' || jenis_kelamin == '' || alamat == '' || no_telepon == ''){
-                    //     alert('Ok')
-                    //     exit;
-                    // }
-
                     //lakukan AJAX
                     $.ajax({
 
@@ -481,6 +476,7 @@ $(document).ready(function(){
                
                 })
                 
+            //akhiri modal
             }).on('hide.bs.modal', function(event){
                 $(this).find('#modal-edit').html("")
             })
